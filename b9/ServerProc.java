@@ -98,13 +98,13 @@ public class ServerProc extends Thread {
 		}
 	}
 
-	// Chuaw xong con thieu
 	private String makeResponse(List<Student> res) {
 		if (res.isEmpty()) {
 			return "Khong tim thay";
 		}
 		String s = "";
-//		for(Studen st: res) s +
+		for (Student st : res)
+			s += st;
 		return s;
 	}
 }

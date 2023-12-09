@@ -8,7 +8,6 @@ public class Student {
 	private String name;
 	private int dOBirth;
 	private double grade;
-	List<Student> listst = new ArrayList<Student>();
 
 	public Student(int id, String name, int dOBirth, double grade) {
 		this.id = id;
@@ -48,13 +47,4 @@ public class Student {
 	public void setGrade(double grade) {
 		this.grade = grade;
 	}
-
-	public List<Student> getListst() {
-		return listst;
-	}
-
-	public void setListst(List<Student> listst) {
-		this.listst = listst;
-	}
-
 }

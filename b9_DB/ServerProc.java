@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -15,7 +16,7 @@ public class ServerProc extends Thread {
 	BufferedReader netIn;
 	DAO dao;
 
-	public ServerProc(Socket socket) throws IOException {
+	public ServerProc(Socket socket) throws IOException, ClassNotFoundException, SQLException {
 		this.socket = socket;
 		netOut = new PrintWriter(socket.getOutputStream(), true);
 		netIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -24,8 +25,7 @@ public class ServerProc extends Thread {
 
 	public void run() {
 		boolean isLogin = false;
-		String com, param;
-		String response = "";
+		String com, param, response, rs;
 		String lastUserName = null;
 
 		try {
@@ -78,33 +78,31 @@ public class ServerProc extends Thread {
 				param = st.nextToken();
 				switch (com) {
 				case "FINDBYID":
-					res = dao.findByID(param);
-					response = makeResponse(res);
+					rs = dao.findByID(param);
+					if (rs == null)
+						response = "Khong tim thay";
+					else
+						response = rs;
 					break;
 				case "FINDBYNAME":
-					res = dao.findByName(line.substring(param.length()).trim());
-					response = makeResponse(res);
+					param = line.substring(com.length()).trim();
+					rs = dao.findByName(param);
+					if (rs == null)
+						response = "Khong tim thay";
+					else
+						response = rs;
 					break;
 				default:
-					response = "Lenh khong hop le.";
+					response = "Lenh khong hop le";
 					break;
 				}
 				netOut.println(response);
 			}
 			netOut.println("Service is closed");
 			socket.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	// Chuaw xong con thieu
-	private String makeResponse(List<Student> res) {
-		if (res.isEmpty()) {
-			return "Khong tim thay";
-		}
-		String s = "";
-//		for(Studen st: res) s +
-		return s;
-	}
 }
