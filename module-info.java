@@ -7,4 +7,5 @@
  */
 module LTrinhMang {
 	requires java.sql;
+	requires java.rmi;
 }
